@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Feather, MaterialCommunityIcons as Icon, MaterialIcons } from "@expo/vector-icons";
-
 import { inserir, remover } from "../config/database";
 import { globalStyles } from "../styles/globalStyles";
 
@@ -34,9 +33,7 @@ export default function Home({ navigation }) {
       setMusicas([...musicas, ...selecionadas]);
     }
   };
-
   return (
-
     <ImageBackground
       source={require('../images/fundo-de-luzes-gradientes.jpg')}
       style={globalStyles.container}
@@ -121,10 +118,8 @@ export default function Home({ navigation }) {
         </TouchableOpacity>
       </View>
     </ImageBackground>
-
   );
 }
-
 const styles = StyleSheet.create({
   topArea: {
     flex: 1,
@@ -197,14 +192,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 12,
     backgroundColor: "#f5f5f5",
-
   },
   addMusicButton: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 5,
     justifyContent: "space-evenly",
-    
   },
   listContainer: {
     paddingBottom: 20,
@@ -216,7 +209,6 @@ const styles = StyleSheet.create({
     padding: 40,
     marginBottom: 10,
     borderRadius: 8,
-
   },
   musicInfo: {
     flex: 1,
@@ -228,7 +220,7 @@ const styles = StyleSheet.create({
     color: "#8a7cbdff",
     fontWeight: "600",
     textAlign: "center",
-    
+
   },
   removeButton: {
     position: "absolute",

@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
 import * as LocalAuthentication from "expo-local-authentication";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-
-import { Alert, SafeAreaView, TouchableOpacity, Text, StyleSheet, ImageBackground, View } from "react-native";
+import { Alert,TouchableOpacity, Text, StyleSheet, ImageBackground, View } from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 
 export default function LoginScreen({ navigation }: any) {
@@ -10,18 +9,21 @@ export default function LoginScreen({ navigation }: any) {
   const autenticar = useCallback(async () => {
     try {
       const temLeitor = await LocalAuthentication.hasHardwareAsync();
+      if (!temLeitor) return Alert.alert("Dispositivo não possui leitor biométrico");
+
       const temBiometria = await LocalAuthentication.isEnrolledAsync();
-      const validacaoBiometrica = await LocalAuthentication.authenticateAsync();
+      if (!temBiometria) return Alert.alert("Nenhuma biometria cadastrada");
 
-      if (!temLeitor) return Alert.alert('nao tem leitor');
-      if (!temBiometria) return Alert.alert('Sem digital');
-      if (validacaoBiometrica) return navigation.navigate('Home');
+      const resultado = await LocalAuthentication.authenticateAsync();
+
+      if (resultado.success) {
+        navigation.navigate("Home");
+      }
     } catch (err) {
-      Alert.alert("Ocorreu um erro no processo de biométrico!" + err);
+      Alert.alert("Ocorreu um erro no processo biométrico: " + err);
     }
-
   }, [navigation]);
-
+  
   return (
 
     <ImageBackground
@@ -37,10 +39,7 @@ export default function LoginScreen({ navigation }: any) {
         </TouchableOpacity>
         <Text style={styles.infoText}>Toque no ícone para autenticar</Text>
       </View>
-
     </ImageBackground>
-
-
   );
 }
 

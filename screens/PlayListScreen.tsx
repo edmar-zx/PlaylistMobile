@@ -31,17 +31,17 @@ export default function PlayListScreen() {
   const [modoAleatorio, setModoAleatorio] = useState(false);
   const isMounted = useRef(true);
 
-useEffect(() => {
-  isMounted.current = true;
-  return () => {
-    isMounted.current = false;
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
 
-    if (som) {
-      som.setOnPlaybackStatusUpdate(null);
-      som.unloadAsync();
-    }
-  };
-}, [som]);
+      if (som) {
+        som.setOnPlaybackStatusUpdate(null);
+        som.unloadAsync();
+      }
+    };
+  }, [som]);
 
 
   useEffect(() => {
@@ -107,7 +107,7 @@ useEffect(() => {
       }
 
       let proximoIndex;
-      
+
       if (modoAleatorio) {
         let randomIndex = Math.floor(Math.random() * lista.length);
         while (randomIndex === currentTrackIndex && lista.length > 1) {
@@ -117,7 +117,7 @@ useEffect(() => {
       } else {
         proximoIndex = (currentTrackIndex + 1) % lista.length;
       }
-      
+
       setCurrentTrackIndex(proximoIndex);
       const { sound } = await Audio.Sound.createAsync({
         uri: lista[proximoIndex].uri,
@@ -144,7 +144,7 @@ useEffect(() => {
       if (anteriorIndex < 0) {
         anteriorIndex = lista.length - 1;
       }
-      
+
       setCurrentTrackIndex(anteriorIndex);
       const { sound } = await Audio.Sound.createAsync({
         uri: lista[anteriorIndex].uri,
@@ -225,8 +225,8 @@ useEffect(() => {
                 onPress={() => {
                   remover(item.id);
                   setLista(lista.filter((musica) => musica.id !== item.id));
-                  
-                  // Se a música removida era a atual vamos para a proxima
+
+                  // Se a musica removida era a atual vai para a proxima
                   if (currentTrackIndex === index) {
                     if (lista.length === 1) {
                       // Se era a ultima musica para a reprodução
@@ -253,8 +253,8 @@ useEffect(() => {
       />
 
       <View style={styles.buttons}>
-        <TouchableOpacity 
-          style={[styles.buttonNext, modoAleatorio && styles.buttonActive]} 
+        <TouchableOpacity
+          style={[styles.buttonNext, modoAleatorio && styles.buttonActive]}
           onPress={toggleModoAleatorio}
         >
           <Feather name="shuffle" size={25} color={modoAleatorio ? "#FFD700" : "#ffffffff"} />
@@ -284,7 +284,12 @@ useEffect(() => {
         <TouchableOpacity style={styles.buttonNext} onPress={proxima}>
           <Feather name="skip-forward" size={25} color="#ffffffff" />
         </TouchableOpacity>
-        <View style={{ width: 40 }} />
+        <TouchableOpacity
+          style={[styles.buttonNext, { opacity: 0 }]}
+          disabled={true}
+        >
+          <Feather name="shuffle" size={25} color="#ffffffff" />
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -350,7 +355,7 @@ export const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 10,
+    alignItems: "center",
     marginBottom: 60,
     marginTop: 10,
   },
